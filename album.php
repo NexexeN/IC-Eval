@@ -9,9 +9,9 @@
 require_once ('conn.php');
 session_start();
 
-/*if (!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])){
     header('Location: index.php');
-}*/
+}
 
 if (isset($_GET['album'])){
     $stmt = $bdd->prepare('SELECT * FROM album WHERE album = :album');

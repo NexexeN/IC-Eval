@@ -29,11 +29,11 @@
             <form method="post" action="accueil.php" style="border: 1px solid black; padding: 20px; border-radius: 5px;">
                 <div class="form-group">
                     <label for="email">Adresse email</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email">
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
                 </div>
                 <div class="form-group">
                     <label for="mpd">Mot de passe</label>
-                    <input type="password" class="form-control" id="mdp" placeholder="Mot de passe">
+                    <input type="password" class="form-control" name="mdp" id="mdp" placeholder="Mot de passe">
                 </div>
                 <button type="submit" name="login" class="btn btn-primary">Submit</button>
             </form>
