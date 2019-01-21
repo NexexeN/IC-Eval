@@ -8,30 +8,18 @@
 require_once ('conn.php');
 session_start();
 
-if(isset($_POST['email'])&& isset($_POST['mdp'])){
-    $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-    $stmt = $bdd->prepare('SELECT id, login FROM user WHERE login = :login AND mdp = :password');
-    $stmt->execute(array("login" => $_POST['email'], "password" => $_POST['mdp']));
-    $result = $stmt->fetchAll()[0];
-    if (count($result) > 0){
-        $_SESSION['id'] = $result['id'];
-        $_SESSION['username'] = $result['login'];
-    } else {
-        header('Location: index.php');
-    }
-}elseif(!isset($_SESSION['username'])){
+if(!isset($_SESSION['username'])){
     header('Location: index.php');
 }
 
 if (isset($_GET['fav'])){
-    $stmt = $bdd->prepare('INSERT INTO fav (`idUser`, `idFav`, `typeFav`) VALUES (:id, :idFav, "albums")');
+    $stmt = $bdd->prepare('INSERT INTO fav (`idUser`, `idFav`, `typeFav`) VALUES (:id, :idFav, "artistes")');
     $stmt->execute(array("id" => $_SESSION['id'], "idFav" => $_GET['fav']));
 }
 
-$stmt = $bdd->prepare('SELECT * FROM albums');
+$stmt = $bdd->prepare('SELECT art_id, art_nom, gen_libelle, pay_libelle FROM `artistes`, genres, pays WHERE art_pays = pay_pays AND art_genre = gen_genre');
 $stmt->execute();
-$albums = $stmt->fetchAll();
+$artistes = $stmt->fetchAll();
 
 ?>
 
@@ -65,7 +53,7 @@ $albums = $stmt->fetchAll();
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link" href="accueil.php">Album</a>
+                <a class="nav-link" href="accueil.php">Albums</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="artiste.php">Artistes</a>
@@ -78,30 +66,29 @@ $albums = $stmt->fetchAll();
         </ul>
     </div>
 </nav>
-
 <div class="container" style="padding: 0 0 50px;">
-    <h1 class="mt-5">Liste des albums</h1>
+    <h1 class="mt-5">Liste des artistes</h1>
     <div class="row mt-5">
         <div class="col-lg-12">
-            <table id="album" class="table table-striped table-bordered" style="width: 100%">
+            <table id="artiste" class="table table-striped table-bordered" style="width: 100%">
                 <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Année</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Action</th>
-                    </tr>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Pays</th>
+                    <th scope="col">Action</th>
+                </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($albums as $album){ ?>
+                <?php foreach ($artistes as $artiste){ ?>
                     <tr>
-                        <th scope="row"><?=$album['alb_id'] ?></th>
-                        <td><?=$album['alb_nom'] ?></td>
-                        <td><?=$album['alb_annee'] ?></td>
-                        <td><?=$album['alb_prix'] ?>€</td>
+                        <th scope="row"><?=$artiste['art_id'] ?></th>
+                        <td><?=$artiste['art_nom'] ?></td>
+                        <td><?=$artiste['gen_libelle'] ?></td>
+                        <td><?=$artiste['pay_libelle'] ?></td>
                         <td style="display: flex; text-align: center;">
-                            <div style="width: 100%"><a href="accueil.php?fav=<?=$album['alb_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a></div>
+                            <div style="width: 100%"><a href="artiste.php?fav=<?=$artiste['art_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a></div>
                         </td>
                     </tr>
                 <?php }?>
@@ -112,7 +99,7 @@ $albums = $stmt->fetchAll();
 </div>
 <script type="application/javascript">
     $(document).ready(function() {
-        $('#album').DataTable({
+        $('#artiste').DataTable({
             pageLength: 25, //your page size here
         });
     } );
