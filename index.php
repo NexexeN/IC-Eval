@@ -5,6 +5,10 @@
  * Date: 14/01/2019
  * Time: 15:41
  */
+session_start();
+if (isset($_GET['d'])){
+    session_destroy();
+}
 
 ?>
 <!doctype html>
@@ -21,12 +25,12 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="row" style="display: flex; flex-direction: column; justify-content: center; height: 100vh; text-align: center">
-        <h1>Intergration continue : Evaluation</h1>
-        <h5>COATANEA Julien - AUGAGNEUR Alessandro - JOURDAN-BOREL Quentin</h5>
-        <div class="col-lg-6 offset-lg-3 mt-4">
-            <form method="post" action="accueil.php" style="border: 1px solid black; padding: 20px; border-radius: 5px;">
+<div class="container" style="display: flex; flex-direction: column; justify-content: center; height: 100vh;">
+    <div class="row" style="text-align: center">
+        <div class="col-12 mt-4">
+            <h1>Intergration continue : Evaluation</h1>
+            <h5>COATANEA Julien - AUGAGNEUR Alessandro - JOURDAN-BOREL Quentin</h5>
+            <form method="post" action="accueil.php" style="border: 1px solid black; padding: 20px; border-radius: 5px; margin: auto; text-align: left" class="col-6 offset-3 mt-4">
                 <div class="form-group">
                     <label for="email">Adresse email</label>
                     <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
@@ -35,7 +39,9 @@
                     <label for="mpd">Mot de passe</label>
                     <input type="password" class="form-control" name="mdp" id="mdp" placeholder="Mot de passe">
                 </div>
-                <button type="submit" name="login" class="btn btn-primary">Submit</button>
+                <div style="text-align:center;">
+                    <button type="submit" name="login" class="btn btn-primary">Se connecter</button>
+                </div>
             </form>
         </div>
     </div>

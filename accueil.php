@@ -75,6 +75,9 @@ $albums = $stmt->fetchAll();
             <li class="nav-item">
                 <a class="nav-link" href="profile.php">Profile</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?d=1">Deconnexion</a>
+            </li>
         </ul>
     </div>
 </nav>
