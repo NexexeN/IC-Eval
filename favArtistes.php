@@ -17,9 +17,6 @@ if (isset($_GET['del'])){
     $stmt->execute(array("idUser" => $_SESSION['id'], "idFav" => $_GET['del']));
 }
 
-$stmt = $bdd->prepare('SELECT * FROM albums WHERE alb_id IN (SELECT idFav FROM fav WHERE idUser = :id AND typeFav = "albums")');
-$stmt->execute(array("id" => $_SESSION['id']));
-$albums = $stmt->fetchAll();
 
 $stmt = $bdd->prepare('SELECT art_id, art_nom, gen_libelle, pay_libelle FROM `artistes`, genres, pays WHERE art_pays = pay_pays AND art_genre = gen_genre AND art_id IN (SELECT idFav FROM fav WHERE idUser = :id AND typeFav = "artistes")');
 $stmt->execute(array("id" => $_SESSION['id']));
@@ -45,20 +42,6 @@ $artistes = $stmt->fetchAll();
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <script>
-        $(document).ready(function () {
-            $("#albums").click(function () {
-                $("#album").show();
-                $("#artiste").hide();
-            })
-
-            $("#artistes").click(function () {
-                $("#album").hide();
-                $("#artiste").show();
-            })
-        })
-
-    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
@@ -100,26 +83,26 @@ $artistes = $stmt->fetchAll();
     <div class="row mt-5">
 
         <div class="col-lg-12">
-            <table id="album" class="table table-striped table-bordered" style="width: 100%">
+            <table id="artiste" class="table table-striped table-bordered" style="width: 100%">
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">Année</th>
-                    <th scope="col">Prix</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Pays</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($albums as $album){ ?>
+                <?php foreach ($artistes as $artiste){ ?>
                     <tr>
-                        <th scope="row"><?=$album['alb_id'] ?></th>
-                        <td><?=$album['alb_nom'] ?></td>
-                        <td><?=$album['alb_annee'] ?></td>
-                        <td><?=$album['alb_prix'] ?>€</td>
+                        <th scope="row"><?=$artiste['art_id'] ?></th>
+                        <td><?=$artiste['art_nom'] ?></td>
+                        <td><?=$artiste['gen_libelle'] ?></td>
+                        <td><?=$artiste['pay_libelle'] ?></td>
                         <td style="display: flex; text-align: center;">
                             <div style="width: 100%">
-                                <a href="fav.php?del=<?=$album['alb_id'] ?>"> <i class="fa fa-trash" aria-hidden="true"></i> </a>
+                                <a href="favArtistes.php?del=<?=$artiste['art_id'] ?>"> <i class="fa fa-trash" aria-hidden="true"></i> </a>
                             </div>
                         </td>
                     </tr>
@@ -131,7 +114,8 @@ $artistes = $stmt->fetchAll();
 </div>
 <script type="application/javascript">
     $(document).ready(function() {
-        $('#album').DataTable({
+
+        $('#artiste').DataTable({
             pageLength: 25, //your page size here
             language : {
                 "sProcessing":     "Traitement en cours...",
@@ -163,7 +147,6 @@ $artistes = $stmt->fetchAll();
                 }
             }
         });
-
     } );
 </script>
 </body>
