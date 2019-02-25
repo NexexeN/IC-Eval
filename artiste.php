@@ -52,10 +52,10 @@ $artistes = $stmt->fetchAll();
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="accueil.php">Albums</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="artiste.php">Artistes</a>
             </li>
         </ul>
