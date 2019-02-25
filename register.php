@@ -44,7 +44,7 @@ if(isset($_POST['email'])&& isset($_POST['mdp'])){
                     <label for="mpd">Mot de passe</label>
                     <input type="password" class="form-control" name="mdp" id="mdp" placeholder="Mot de passe">
                 </div>
-                <button type="submit" name="login" class="btn btn-primary">Submit</button>
+                <button type="submit" name="login" class="btn btn-primary">Créer le compte</button>
             </form>
         </div>
     </div>

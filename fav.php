@@ -13,13 +13,13 @@ if(!isset($_SESSION['username'])){
 }
 
 if (isset($_GET['fav'])){
-    $stmt = $bdd->prepare('INSERT INTO fav (`idUser`, `idFav`, `typeFav`) VALUES (:id, :idFav, "artistes")');
+    $stmt = $bdd->prepare('INSERT INTO fav (`idUser`, `idFav`, `typeFav`) VALUES (:id, :idFav, "albums")');
     $stmt->execute(array("id" => $_SESSION['id'], "idFav" => $_GET['fav']));
 }
 
-$stmt = $bdd->prepare('SELECT art_id, art_nom, gen_libelle, pay_libelle FROM `artistes`, genres, pays WHERE art_pays = pay_pays AND art_genre = gen_genre');
-$stmt->execute();
-$artistes = $stmt->fetchAll();
+$stmt = $bdd->prepare('SELECT * FROM albums WHERE alb_id IN (SELECT idFav FROM fav WHERE idUser = :id AND typeFav = "albums")');
+$stmt->execute(array("id" => $_SESSION['id']));
+$albums = $stmt->fetchAll();
 
 ?>
 
@@ -55,10 +55,10 @@ $artistes = $stmt->fetchAll();
             <li class="nav-item">
                 <a class="nav-link" href="accueil.php">Albums</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="artiste.php">Artistes</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="fav.php">Favoris</a>
             </li>
         </ul>
@@ -72,29 +72,30 @@ $artistes = $stmt->fetchAll();
         </ul>
     </div>
 </nav>
+
 <div class="container" style="padding: 0 0 50px;">
-    <h1 class="mt-5">Liste des artistes</h1>
+    <h1 class="mt-5">Liste des albums</h1>
     <div class="row mt-5">
         <div class="col-lg-12">
-            <table id="artiste" class="table table-striped table-bordered" style="width: 100%">
+            <table id="album" class="table table-striped table-bordered" style="width: 100%">
                 <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Genre</th>
-                    <th scope="col">Pays</th>
-                    <th scope="col">Action</th>
-                </tr>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Année</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($artistes as $artiste){ ?>
+                <?php foreach ($albums as $album){ ?>
                     <tr>
-                        <th scope="row"><?=$artiste['art_id'] ?></th>
-                        <td><?=$artiste['art_nom'] ?></td>
-                        <td><?=$artiste['gen_libelle'] ?></td>
-                        <td><?=$artiste['pay_libelle'] ?></td>
+                        <th scope="row"><?=$album['alb_id'] ?></th>
+                        <td><?=$album['alb_nom'] ?></td>
+                        <td><?=$album['alb_annee'] ?></td>
+                        <td><?=$album['alb_prix'] ?>€</td>
                         <td style="display: flex; text-align: center;">
-                            <div style="width: 100%"><a href="artiste.php?fav=<?=$artiste['art_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a></div>
+                            <div style="width: 100%"><a href="accueil.php?fav=<?=$album['alb_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a></div>
                         </td>
                     </tr>
                 <?php }?>
@@ -105,7 +106,7 @@ $artistes = $stmt->fetchAll();
 </div>
 <script type="application/javascript">
     $(document).ready(function() {
-        $('#artiste').DataTable({
+        $('#album').DataTable({
             pageLength: 25, //your page size here
             language : {
                 "sProcessing":     "Traitement en cours...",

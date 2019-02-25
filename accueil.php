@@ -70,6 +70,9 @@ $albums = $stmt->fetchAll();
             <li class="nav-item">
                 <a class="nav-link" href="artiste.php">Artistes</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="fav.php">Favoris</a>
+            </li>
         </ul>
         <ul class="navbar-nav my-2 my-lg-0">
             <li class="nav-item">
