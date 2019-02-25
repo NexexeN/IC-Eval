@@ -35,16 +35,22 @@ if(isset($_POST['email'])){
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="accueil.php">Album</a>
+            <li class="nav-item">
+                <a class="nav-link" href="accueil.php">Albums</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="artiste.php">Artistes</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="fav.php">Favoris</a>
+            </li>
         </ul>
         <ul class="navbar-nav my-2 my-lg-0">
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="profile.php">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?d=1">Deconnexion</a>
             </li>
         </ul>
     </div>

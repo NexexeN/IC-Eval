@@ -42,7 +42,11 @@ if (isset($_GET['d'])){
                 <div style="text-align:center;">
                     <button type="submit" name="login" class="btn btn-primary">Se connecter</button>
                 </div>
+                <div class="mt-3" style="text-align:center;">
+                    <a href="register.php"><p class="text-muted">Créer mon compte</p></a>
+                </div>
             </form>
+
         </div>
     </div>
 </div>

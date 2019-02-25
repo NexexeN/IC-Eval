@@ -20,7 +20,7 @@ if (isset($_GET['del'])){
 
 $stmt = $bdd->prepare('SELECT art_id, art_nom, gen_libelle, pay_libelle FROM `artistes`, genres, pays WHERE art_pays = pay_pays AND art_genre = gen_genre AND art_id IN (SELECT idFav FROM fav WHERE idUser = :id AND typeFav = "artistes")');
 $stmt->execute(array("id" => $_SESSION['id']));
-$artistes = $stmt->fetchAll();
+$artistes = $stmt->fetchAll(2);
 
 ?>
 
