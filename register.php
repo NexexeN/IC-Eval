@@ -1,12 +1,29 @@
 <?php
 require_once ('conn.php');
 
+
 if(isset($_POST['email'])&& isset($_POST['mdp'])){
     $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-    $stmt = $bdd->prepare('INSERT INTO user (login, mdp, nom, prenom) VALUES (:login, :password, :nom, :prenom)');
-    $stmt->execute(array("login" => $_POST['email'], "password" => $_POST['mdp'], "nom" => $_POST['nom'], "prenom" => $_POST['prenom']));
-    header('Location: index.php');
+    //$blacklist = apc_fetch('blacklist');
+
+    $blacklist = [];
+
+    if (($handle = fopen("D:\wamp64\www\IC-Eval\IC-Eval\docs\blacklist.csv", "r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            array_push($blacklist, $data[0]);
+        }
+        fclose($handle);
+    }
+
+    if (!in_array(strtolower($_POST['prenom']), $blacklist) && !in_array(strtolower($_POST['nom']), $blacklist)){
+        $stmt = $bdd->prepare('INSERT INTO user (login, mdp, nom, prenom) VALUES (:login, :password, :nom, :prenom)');
+        $stmt->execute(array("login" => $_POST['email'], "password" => $_POST['mdp'], "nom" => $_POST['nom'], "prenom" => $_POST['prenom']));
+        header('Location: index.php');
+    } else {
+        echo "change moi ce nom";
+    }
+
 }
 ?>
 <!doctype html>
