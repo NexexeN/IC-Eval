@@ -33,6 +33,20 @@ $stmt = $bdd->prepare('SELECT * FROM albums');
 $stmt->execute();
 $albums = $stmt->fetchAll();
 
+foreach ($albums as &$album){
+    $stmt = $bdd->prepare('SELECT * FROM fav WHERE typeFav = "albums" AND idFav = :idFav');
+    $stmt -> bindParam(':idFav', $album['alb_id']);
+    $stmt->execute();
+    $res = $stmt->fetchAll();
+
+    if (count($res) > 0){
+        $album['fav'] = true;
+    } else {
+        $album['fav'] = false;
+    }
+
+}
+
 ?>
 
 
@@ -108,7 +122,7 @@ $albums = $stmt->fetchAll();
                         <td><?=$album['alb_prix'] ?>€</td>
                         <td style="display: flex; text-align: center;">
                             <div style="width: 100%; display: flex; justify-content: space-around">
-                                <a href="accueil.php?fav=<?=$album['alb_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a>
+                                <a href="accueil.php?fav=<?=$album['alb_id'] ?>"> <i class="fa fa-star" aria-hidden="true" <?php if (!$album['fav']){echo "style='color:white;'";} ?>></i> </a>
                                 <a href="#"> <i class="fab fa-facebook"></i> </a>
                                 <a href="#"> <i class="fab fa-twitter-square"></i> </a>
                             </div>
