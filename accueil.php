@@ -107,7 +107,11 @@ $albums = $stmt->fetchAll();
                         <td><?=$album['alb_annee'] ?></td>
                         <td><?=$album['alb_prix'] ?>€</td>
                         <td style="display: flex; text-align: center;">
-                            <div style="width: 100%"><a href="accueil.php?fav=<?=$album['alb_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a></div>
+                            <div style="width: 100%; display: flex; justify-content: space-around">
+                                <a href="accueil.php?fav=<?=$album['alb_id'] ?>"> <i class="fa fa-star" aria-hidden="true"></i> </a>
+                                <a href="#"> <i class="fab fa-facebook"></i> </a>
+                                <a href="#"> <i class="fab fa-twitter-square"></i> </a>
+                            </div>
                         </td>
                     </tr>
                 <?php }?>
